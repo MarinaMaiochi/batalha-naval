@@ -1,0 +1,156 @@
+body{
+    background-color: black;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    border: 0;
+    margin: 0;
+    font-family: 'Baloo Paaji 2', cursive;
+}
+h1{
+    margin: 2px;
+    font-size: 28px;
+    color: #0beeee ; 
+}
+h2{
+    margin: 2px;
+    font-size: 16px;
+    color: #ffffff ; 
+}
+h3{
+    margin: 2px;
+    font-size: 10px;
+    color: #ffffff ; 
+    font-family:monospace;
+}
+.info{
+    width: 24px;
+    margin: 2px;
+}
+.vert{
+    transform: rotate(90deg);
+}
+img{
+    max-height: 30px;
+}
+.highlight{
+    filter: drop-shadow(2px 2px 5px rgb(0, 238, 255));
+}
+.div1{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 320px;
+} 
+.div2{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+}
+.div3{
+    width: 210px;
+}
+.div4e5{
+    display:flex;
+    height: 30px;
+    align-items: center;
+    color: #0beeee  ;
+}
+.numero{
+   margin: 6px;
+}
+.limpa,.comeca{
+    color: black;
+    background-color: #40c8da ;
+    font-size: 14px;
+    width: 60px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 4px 0;
+    border-radius: 10px;
+    cursor: default;
+}
+.escuro{
+    opacity: 0.5;
+}
+.paiTabuleirojog{
+    position: relative;
+}
+.tabuleiroJog{
+    position: relative;
+    top: 0;
+    left: 0;
+}
+.mostraInfos{
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    width: 90%;
+    height: 90%;
+    background-color: rgb(8, 43, 53);
+    
+}
+.mostraInfos>*{
+    width: 90%;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    margin: 10px;
+    font-size: 14px;
+}
+span>img{
+    height: 20px;
+    margin: -6px 0;
+}
+.some{
+    visibility: hidden;
+}
+.tabuleiroJog,.tabuleiroPc{
+    display:flex;
+}
+.celula{
+    width: 30px;
+    height: 30px;
+    margin: 1px;
+    position: relative;
+}
+.vazio{
+    background-color:  #40b2da;
+}
+.agua{
+    background-image: url(agua.png);
+    background-size: 30px 30px ;
+}
+.navio::after{
+    content: '';
+    background-size: 30px 30px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 30px;
+    height: 30px;
+}
+.navio.vertical::after {
+    transform: rotate(90deg);
+} 
+.navio.traz.vertical::after {
+    transform: rotate(270deg);
+}
+.navio.traz::after {
+    transform: rotate(180deg);
+}
+.navio1::after {
+    background-image: url(navio1.png);
+}
+.navioPonta::after {
+    background-image: url(navioPonta.png);
+}
+.navioMeio::after {
+    background-image: url(navioMeio.png);
+}
+.fogo{
+    background-image: url(fogo.png);
+    background-size: 30px 30px ;
+}

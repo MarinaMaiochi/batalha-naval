@@ -89,8 +89,7 @@ img{
     left: 16px;
     width: 90%;
     height: 90%;
-    background-color: rgb(8, 43, 53);
-    
+    background-color: rgb(8, 43, 53); 
 }
 .mostraInfos>*{
     width: 90%;
@@ -98,7 +97,24 @@ img{
     justify-content: center;
     color: #ffffff;
     margin: 10px;
-    font-size: 14px;
+    font-size: 18px;
+}
+.finalDeJogo{
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    width: 90%;
+    height: 90%;
+    background-color: rgba(255, 255, 255,0.5);
+    
+}
+.finalDeJogo>*{
+    width: 90%;
+    align-items: center;
+    justify-content: center;
+    color: #152031;
+    margin: 10px;
+    font-size: 48px;
 }
 span>img{
     height: 20px;
@@ -116,13 +132,19 @@ span>img{
     margin: 1px;
     position: relative;
 }
-.vazio{
-    background-color:  #40b2da;
-   
-}
 .agua{
     background-image: url(agua.png);
     background-size: 30px 30px ;
+}
+.bombaagua::after{
+    background-image: url(bombaagua.png);
+    background-size: 30px 30px ;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 30px;
+    height: 30px;
 }
 .navio::after{
     content: '';
@@ -151,24 +173,18 @@ span>img{
 .navioMeio::after {
     background-image: url(navioMeio.png);
 }
-.fogo{
-    background-image: url(fogo.png);
-    background-size: 30px 30px ;
+.navio1.bomba::after {
+    background-image: url(bomba.png), url(navio1.png);
 }
-
-
+.navioPonta.bomba::after {
+    background-image: url(bomba.png), url(navioPonta.png);
+}
+.navioMeio.bomba::after{
+    background-image: url(bomba.png), url(navioMeio.png);
+}
 .navio.trazPc.vertical::after {
     transform: rotate(270deg);
 }
 .navio.trazPc::after {
     transform: rotate(180deg);
-}
-.navio1Pc::after {
-    background-image: url(navio1.png);
-}
-.navioPontaPc::after {
-    background-image: url(navioPonta.png);
-}
-.navioMeioPc::after {
-    background-image: url(navioMeio.png);
 }

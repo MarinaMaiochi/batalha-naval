@@ -208,9 +208,10 @@ function setTabuleiroPc(){
         for (let i = 0; i < 10; i++) {
             const celula = document.createElement('div');
             celula.classList.add('celula');
-            celula.classList.add('vazio');
+            celula.classList.add('agua');
             celula.setAttribute("data-coluna" , j);
             celula.setAttribute("data-linha" , i);
+            celula.addEventListener('click', confereBombaTabPc, false);
             divColuna.appendChild(celula);
         }  
         tabuleiro.appendChild(divColuna);
@@ -236,7 +237,6 @@ function colocaNavioPc(){
             aplicaNavioVert(coord.colunaInicial,coord.linhaInicial, coord.linhaFinal, '.tabuleiroPc');               
         } 
         qtd4Pc--;   
-        console.info('navio4' + qtd4Pc)
     }
     while (qtd3Pc > 0) {
         let sentidoAleat = Math.floor(Math.random() *2);
@@ -281,12 +281,20 @@ function colocaNavioPc(){
         const coord = normalizaEspaco(colI,linI,1,sentidoStr);
         const disp = checaEspacosDisponiveis(coord.colunaInicial, coord.colunaFinal, coord.linhaInicial, coord.linhaFinal, '.tabuleiroPc');
         if (disp){            
-            document.querySelector(`${'.tabuleiroPc'} [data-coluna="${colI}"][data-linha="${linI}"]`).classList.add('navio', 'navio1Pc');
+            document.querySelector(`${'.tabuleiroPc'} [data-coluna="${colI}"][data-linha="${linI}"]`).classList.add('navio', 'navio1');
             if (sentidoAleat == 1){
                 document.querySelector(`${'.tabuleiroPc'} [data-coluna="${colI}"][data-linha="${linI}"]`).classList.add('vertical');
             }
             qtd1Pc--; 
         }   
+    }
+}
+function confereBombaTabPc(event){
+    const celula = event.target;
+    if (celula.classList.contains('navio')){
+        celula.classList.add('bomba');
+    } else {
+        celula.classList.add('bombaagua');
     }
 }
 setTabuleiroPc();

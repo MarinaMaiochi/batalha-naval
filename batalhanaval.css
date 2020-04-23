@@ -118,6 +118,7 @@ span>img{
 }
 .vazio{
     background-color:  #40b2da;
+   
 }
 .agua{
     background-image: url(agua.png);
@@ -153,4 +154,21 @@ span>img{
 .fogo{
     background-image: url(fogo.png);
     background-size: 30px 30px ;
+}
+
+
+.navio.trazPc.vertical::after {
+    transform: rotate(270deg);
+}
+.navio.trazPc::after {
+    transform: rotate(180deg);
+}
+.navio1Pc::after {
+    background-image: url(navio1.png);
+}
+.navioPontaPc::after {
+    background-image: url(navioPonta.png);
+}
+.navioMeioPc::after {
+    background-image: url(navioMeio.png);
 }

@@ -16,7 +16,7 @@ let nDaJogada = 0 ;
 let acertoJog = 0 ;
 let acertoPc = 0 ;
 let navioJog = 0; 
-let navioPc = 0;
+
 document.querySelector('.info').addEventListener('click', info);
 document.querySelector('.limpa').addEventListener('click', limpar);
 document.querySelector('.comeca').addEventListener('click', comecar);
@@ -456,7 +456,18 @@ function atualizaPlacar(){
     document.querySelector('.acertoJog').innerText = acertoJog + '/' + nDaJogada;
     document.querySelector('.acertoPc').innerText = acertoPc + '/' + nDaJogada;
     document.querySelector('.navioJog').innerText = navioJog;
-    document.querySelector('.navioPc').innerText = navioPc;
+    document.querySelector('.navioPc').innerText = contaNavioBombardeadoJog();
+}
+function contaNavioBombardeadoJog(){
+    let navioPc = 0;
+    for (let i = 10; i < 20; i++){
+        const navios = document.querySelectorAll(`[data-n="${i}"]`).length;
+        const navioBomba = document.querySelectorAll(`[data-n="${i}"].bomba`).length;
+        if (navios == navioBomba) {
+            navioPc++;
+        }
+    }
+    return navioPc;
 }
 
 setTabuleiroPc();

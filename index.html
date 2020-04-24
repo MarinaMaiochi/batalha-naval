@@ -1,61 +1,91 @@
 <!DOCTYPE html>
 <html>
-    <head>
-      
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-        <meta http-equiv="Pragma" content="no-cache" />
-        <meta http-equiv="Expires" content="0" />
-        <title>Batalha Naval</title>
-        <link href="https://fonts.googleapis.com/css2?family=Baloo+Paaji+2&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="batalhanaval.css">
-    </head>
 
-    <body>
-        <h1> Batalha Naval </h1>
-        <h2> Coloque seus navios </h2>
-        <div class="div1">
-            <div class="div2">
-                <img class="info" src="info.png">
-                <img class="sentido" src="sentido.png">
-            </div>
-            <div class="div3">
-                <div class="div4e5">
-                    <div class="numero qtdTam4 "> 1 </div> 
-                    <img class="nav4" src="navio4.png">
-                    <div class="numero qtdTam1 "> 4 </div> 
-                    <img class="nav1" src="navio1.png">   
-                </div>
-                <div class="div4e5">    
-                    <div class="numero qtdTam3 "> 2 </div> 
-                    <img class="nav3" src="navio3.png">
-                    <div class="numero qtdTam2 "> 3 </div> 
-                    <img class="nav2" src="navio2.png">
-                </div>
-            </div>
-            <div class="div6">
-                <div class="limpa"> Limpar </div>
-                <div class="comeca"> Começar </div>
-            </div>
-        </div>
-        <div class="paiTabuleirojog">
-            <div class="tabuleiroJog">
-            </div>
-            <div class="mostraInfos some ">
-                <div>Instruções</div>
-                <li> Clique na seta <span><img src="sentido.png"></span>  para mudar o sentido do navio ANTES de colocá-lo na água.</li>  
-                <li> Clique no desenho do navio que você quer por na água e depois clique no quadrado que a ponta vai ficar ( <span><img src="NavioPonta.png"></span> da esquerda ou <span><img class="vert" src="NavioPonta.png"></span> de cima )</li>
-                <li> ...l.</li>   
-            </div>
-            <div class="finalDeJogo some ">
-                <div><span> aaaaaaaaaa </span></div>                     
-            </div>
-        </div>
-        <h2> Tabuleiro Adversário </h2>
-        <div class="tabuleiroPc">
-        </div>
+<head>
 
-        <script src="batalhanaval.js"></script>
-    </body>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>Batalha Naval</title>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Paaji+2&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="batalhanaval.css">
+</head>
+
+<body>
+    <h1> Batalha Naval </h1>
+    <h2> Coloque seus navios </h2>
+    <div class="div1">
+        <div class="div2">
+            <img class="info" src="info.png">
+            <img class="sentido" src="sentido.png">
+        </div>
+        <div class="div3">
+            <div class="div4e5">
+                <div class="numero qtdTam4 "> 1 </div>
+                <img class="nav4" src="navio4.png">
+                <div class="numero qtdTam1 "> 4 </div>
+                <img class="nav1" src="navio1.png">
+            </div>
+            <div class="div4e5">
+                <div class="numero qtdTam3 "> 2 </div>
+                <img class="nav3" src="navio3.png">
+                <div class="numero qtdTam2 "> 3 </div>
+                <img class="nav2" src="navio2.png">
+            </div>
+        </div>
+        <div class="div6">
+            <div class="limpa"> Limpar </div>
+            <div class="comeca"> Começar </div>
+        </div>
+    </div>
+    <div class="paiTabuleirojog">
+        <div class="flip-box" data-id="6">
+            <div class="flip-box-inner">
+                <div class="flip-box-front">
+                    <h2> Seu Tabuleiro </h2>
+                    <div class="tabuleiroJog">
+                    </div>
+                </div>
+                <div class="flip-box-back">
+                    <h2> Tabuleiro Adversário </h2>
+                    <div class="tabuleiroPc">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mostraInfos some ">
+            <div>Instruções</div>
+            <li> Clique na seta <span><img src="sentido.png"></span> para mudar o sentido do navio ANTES de colocá-lo na
+                água.</li>
+            <li> Clique no desenho do navio que você quer por na água e depois clique no quadrado que a ponta vai ficar
+                ( <span><img src="NavioPonta.png"></span> da esquerda ou <span><img class="vert"
+                        src="NavioPonta.png"></span> de cima )</li>
+        </div>
+        <div class="finalDeJogo some">
+            <div> aaaaaaaaaa </div>
+        </div>
+    </div>
+    <div class="estatisticas">
+        <div>
+            <div class="textoPlacar"> Você </div>
+            <div class="numPlacar acertoJog"> aaaa </div>
+            <div class="numPlacar navioJog"> aaaa </div>
+        </div>
+        <div >
+            <div class="textoPlacar"> X </div>
+            <div class="textoPlacar"> Acertos / Total </div>
+            <div class="textoPlacar"> Navios </div> 
+        </div>
+        <div>
+            <div class="textoPlacar"> Adversário </div>
+            <div class="numPlacar acertoPc"> aaaa </div>
+            <div class="numPlacar navioPc"> aaaa </div> 
+        </div>
+    </div>
+
+    <script src="batalhanaval.js"></script>
+</body>
+
 </html>

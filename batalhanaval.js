@@ -12,6 +12,11 @@ let qtd2 = 3;
 let qtd3 = 2;
 let qtd4 = 1;
 let nDoNavio = 0;
+let nDaJogada = 0 ;
+let acertoJog = 0 ;
+let acertoPc = 0 ;
+let navioJog = 0; 
+let navioPc = 0;
 document.querySelector('.info').addEventListener('click', info);
 document.querySelector('.limpa').addEventListener('click', limpar);
 document.querySelector('.comeca').addEventListener('click', comecar);
@@ -353,61 +358,105 @@ function jogadaJog(event){
     if (estadoJogo !== estados.JOGADOR){
         return;
     }
-    const celula = event.target;
-    if (celula.classList.contains('navio')){
-        celula.classList.add('bomba');
-    } else {
-        celula.classList.add('bombaagua');
-    }
+    acertoJog += atiraNaCelula(event.target);
+    nDaJogada++;
     trocaEstado(estados.PC);
     mostraNavioBombardeado();
-    jogadaPc();
+    setTimeout(jogadaPc, 1000);
+}
+function atiraNaCelula(celula){
+    if (celula.classList.contains('navio')){
+        celula.classList.add('bomba');
+        return 1;
+    } else {
+        celula.classList.add('bombaagua');
+        return 0;
+    }
 }
 function mostraNavioBombardeado(){
-    const nav4 = document.querySelectorAll(`[data-n="0"].navio.bomba`);
-    if( nav4.length == 4){
-        for (let i = 0; i < 4; i++) {
+    const nav4pontas = document.querySelectorAll(`[data-n="0"].navio.bomba.nP:not(.navioPonta)`)
+    const nav4 = document.querySelectorAll(`[data-n="0"].navio.bomba.nM:not(.navioMeio)`);
+    if( nav4.length + nav4pontas.length == 4){
+        navioJog++;
+        for (let i = 0; i < nav4.length; i++) {
             destrocaImgPc(nav4[i]); 
+        }
+        for (let i = 0; i < nav4pontas.length; i++) {
+            destrocaImgPc(nav4pontas[i]); 
         }
     }
     for (let n = 1; n < 3; n++) {  
-        const nav3 = document.querySelectorAll(`[data-n="${n}"].navio.bomba`);
-        if( nav3.length == 3){
-            for (let i = 0; i < 3; i++) {
-                destrocaImgPc(nav3[i]); 
-            }       
+        const nav3pontas = document.querySelectorAll(`[data-n="${n}"].navio.bomba.nP:not(.navioPonta)`)
+        const nav3 = document.querySelectorAll(`[data-n="${n}"].navio.bomba.nM:not(.navioMeio)`);
+        if( nav3.length + nav3pontas.length == 3){
+            navioJog++;
+            for (let i = 0; i < nav3.length; i++) {
+                destrocaImgPc(nav3[i]);
+            }  
+            for (let i = 0; i < nav3pontas.length; i++) {
+                destrocaImgPc(nav3pontas[i]);
+            }      
         }
     }
     for (let n = 3; n < 6; n++) {  
-        const nav2 = document.querySelectorAll(`[data-n="${n}"].navio.bomba`)
+        const nav2 = document.querySelectorAll(`[data-n="${n}"].navio.bomba:not(.navioPonta)`)
         if( nav2.length == 2){
-            for (let i = 0; i < 2; i++) {
-                destrocaImgPc(nav2[i]); 
+            navioJog++;
+            for (let i = 0; i < nav2.length; i++) {
+                destrocaImgPc(nav2[i]);
             }         
         }
     }
     for (let n = 6; n < 10; n++) { 
-        const nav1 = document.querySelector(`[data-n="${n}"].navio.bomba`)
+        const nav1 = document.querySelector(`[data-n="${n}"].navio.bomba:not(.navio1)`)
         if(nav1){
-            destrocaImgPc(nav1);  
+            navioJog++;
+            destrocaImgPc(nav1);
         }       
     }
+   
 }
 function jogadaPc(){
     if (estadoJogo !== estados.PC){
         return;
     } 
+    const jogaveis = document.querySelectorAll(`.tabuleiroJog .celula:not(.bomba):not(.bombaagua)`);
+    const indiceRandom = Math.floor(Math.random()*jogaveis.length);
+    acertoPc += atiraNaCelula(jogaveis[indiceRandom]);
 
-    trocaEstado(estados.JOGADOR);
+    setTimeout(function() {
+        trocaEstado(estados.JOGADOR)
+    },800);
 }
 
-function trocaEstado(estadoDestino) {
+function trocaEstado(estadoDestino){
+    verificaFinaldeJogo();
     estadoJogo = estadoDestino;
     if (estadoDestino === estados.PC) {
-        // escurece tabuleiro jogador, deixa o do pc claro
+        document.querySelector('.flip-box').classList.remove('virado');
     } else if (estadoDestino === estados.JOGADOR) {
-        // esclarece tabuleiro jogador, deixa o do pc escuro
+        document.querySelector('.flip-box').classList.add('virado');
     }
+}
+function verificaFinaldeJogo(){
+    
+    if (acertoJog == 20){
+        estadoJogo = estados.FINAL;
+        document.querySelector('.finalDeJogo').classList.remove('some');
+        document.querySelector('.finalDeJogo div').innerText = 'Você Ganhou';
+    }
+    if (acertoPc == 20){
+        estadoJogo = estados.FINAL;
+        document.querySelector('.finalDeJogo').classList.remove('some');
+        document.querySelector('.finalDeJogo div').innerText = 'Você Perdeu';
+    }
+    atualizaPlacar();
+}
+function atualizaPlacar(){
+    document.querySelector('.acertoJog').innerText = acertoJog + '/' + nDaJogada;
+    document.querySelector('.acertoPc').innerText = acertoPc + '/' + nDaJogada;
+    document.querySelector('.navioJog').innerText = navioJog;
+    document.querySelector('.navioPc').innerText = navioPc;
 }
 
 setTabuleiroPc();

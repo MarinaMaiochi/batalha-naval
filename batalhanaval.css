@@ -31,7 +31,7 @@ h3{
     transform: rotate(90deg);
 }
 img{
-    max-height: 30px;
+    max-height: 32px;
 }
 .highlight{
     filter: drop-shadow(2px 2px 5px rgb(0, 238, 255));
@@ -52,7 +52,7 @@ img{
 }
 .div4e5{
     display:flex;
-    height: 30px;
+    height: 32px;
     align-items: center;
     color: #0beeee  ;
 }
@@ -85,10 +85,10 @@ img{
 }
 .mostraInfos{
     position: absolute;
-    top: 16px;
+    top: 48px;
     left: 16px;
     width: 90%;
-    height: 90%;
+    height: 83%;
     background-color: rgb(8, 43, 53); 
 }
 .mostraInfos>*{
@@ -97,14 +97,14 @@ img{
     justify-content: center;
     color: #ffffff;
     margin: 10px;
-    font-size: 18px;
+    font-size: 16px;
 }
 .finalDeJogo{
     position: absolute;
-    top: 16px;
+    top: 48px;
     left: 16px;
     width: 90%;
-    height: 90%;
+    height: 83%;
     background-color: rgba(255, 255, 255,0.5);
     
 }
@@ -115,6 +115,7 @@ img{
     color: #152031;
     margin: 10px;
     font-size: 48px;
+    text-align: center;
 }
 span>img{
     height: 20px;
@@ -123,37 +124,60 @@ span>img{
 .some{
     visibility: hidden;
 }
+
+.estatisticas{
+    display: flex;
+    text-align: center;
+    border:#118080 solid 0.5px ;
+    margin-top: 6px;
+    border:#118080 solid 0.5px ;
+}
+.estatisticas>div{
+    width:110px ;
+}
+.numPlacar{
+    color: #0beeee;
+    border:#118080 solid 0.5px ;
+}
+.textoPlacar{
+    color: #ffffff;
+    border:#118080 solid 0.5px ;
+}
+
+
+
+
 .tabuleiroJog,.tabuleiroPc{
     display:flex;
 }
 .celula{
-    width: 30px;
-    height: 30px;
-    margin: 1px;
+    width: 32px;
+    height: 32px;
     position: relative;
+    border:  #0beeee solid 0.5px;
 }
 .agua{
     background-image: url(agua.png);
-    background-size: 30px 30px ;
+    background-size: 32px 32px ;
 }
 .bombaagua::after{
     background-image: url(bombaagua.png);
-    background-size: 30px 30px ;
+    background-size: 32px 32px ;
     content: '';
     position: absolute;
     top: 0;
     left: 0;
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
 }
 .navio::after{
     content: '';
-    background-size: 30px 30px;
+    background-size: 32px 32px;
     position: absolute;
     top: 0;
     left: 0;
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
 }
 .navio.vertical::after {
     transform: rotate(90deg);
@@ -190,4 +214,38 @@ span>img{
 }
 .navio.trazPc::after {
     transform: rotate(180deg);
+}
+
+.flip-box {
+    border: rgb(12, 109, 109) solid 1px;
+    position: relative;
+    height: 360px;
+    width: 330px;
+}
+.flip-box-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+}
+.flip-box.virado .flip-box-inner {
+    transform: rotateY(180deg);
+}
+.flip-box-front, .flip-box-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;  
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    background-color: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.flip-box.virado .flip-box-front {
+    z-index: -10;
+}
+.flip-box-back {
+    transform: rotateY(180deg);
 }

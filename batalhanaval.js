@@ -1,3 +1,10 @@
+const estados = {
+    INICIO:'inicio',
+    JOGADOR:'jogador',
+    PC: 'pc',
+    FINAL: 'final'
+}
+let estadoJogo = estados.INICIO;
 let sentido = 'HORI';
 let navio;
 let qtd1 = 4;
@@ -8,7 +15,7 @@ let nDoNavio = 0;
 document.querySelector('.info').addEventListener('click', info);
 document.querySelector('.limpa').addEventListener('click', limpar);
 document.querySelector('.comeca').addEventListener('click', comecar);
-document.querySelector('.sentido').addEventListener('click', Sentido);
+document.querySelector('.sentido').addEventListener('click', seta);
 function info(){
     const infoBut = document.querySelector(".mostraInfos");
     if(infoBut.classList.contains('some')){
@@ -30,6 +37,7 @@ function limpar(){
 function comecar(){
     if (qtd1 == 0 && qtd2 == 0 && qtd3 == 0 && qtd4 == 0){
         deixaEscuro();
+        trocaEstado(estados.JOGADOR);
     }
 }
 function deixaEscuro(){
@@ -48,7 +56,7 @@ function deixaEscuro(){
     document.querySelector(".nav3").classList.remove('highlight');
     document.querySelector(".nav4").classList.remove('highlight');
 }
-function Sentido(event){
+function seta(event){
     if(event.target.classList.contains('vert')){
         event.target.classList.remove('vert');
         sentido = 'HORI';
@@ -67,18 +75,18 @@ function setTabuleiroJog (){
             celula.classList.add('agua');
             celula.setAttribute("data-coluna" , j);
             celula.setAttribute("data-linha" , i);
-            celula.addEventListener('click', colocaNavio, false);
+            celula.addEventListener('click', colocaNavioJog, false);
             divColuna.appendChild(celula);
         }  
         tabuleiro.appendChild(divColuna);
     }
 }
-document.querySelector('.nav1').addEventListener('click', tamanhoNavio);
-document.querySelector('.nav2').addEventListener('click', tamanhoNavio);
-document.querySelector('.nav3').addEventListener('click', tamanhoNavio);
-document.querySelector('.nav4').addEventListener('click', tamanhoNavio);
+document.querySelector('.nav1').addEventListener('click', selecionaNavio);
+document.querySelector('.nav2').addEventListener('click', selecionaNavio);
+document.querySelector('.nav3').addEventListener('click', selecionaNavio);
+document.querySelector('.nav4').addEventListener('click', selecionaNavio);
 
-function tamanhoNavio(event) {
+function selecionaNavio(event) {
    
     if (event.target.classList.contains('nav1')) {
         navio = 1;    
@@ -95,7 +103,10 @@ function tamanhoNavio(event) {
     document.querySelector('.nav4').classList.remove('highlight');
     event.target.classList.add('highlight'); 
 }
-function colocaNavio(event) {
+function colocaNavioJog(event) {
+    if (estadoJogo !== estados.INICIO){
+        return;
+    }
     const celula = event.target;
     const colI = parseInt(celula.getAttribute('data-coluna'),10);
     const linI = parseInt(celula.getAttribute('data-linha'),10); 
@@ -217,7 +228,7 @@ function setTabuleiroPc(){
             celula.classList.add('agua');
             celula.setAttribute("data-coluna" , j);
             celula.setAttribute("data-linha" , i);
-            celula.addEventListener('click', confereBombaTabPc, false);
+            celula.addEventListener('click', jogadaJog, false);
             divColuna.appendChild(celula);
         }  
         tabuleiro.appendChild(divColuna);
@@ -338,14 +349,19 @@ function destrocaImgPc(navio){
         navio.classList.remove('v');
     }
 }
-function confereBombaTabPc(event){
+function jogadaJog(event){
+    if (estadoJogo !== estados.JOGADOR){
+        return;
+    }
     const celula = event.target;
     if (celula.classList.contains('navio')){
         celula.classList.add('bomba');
     } else {
         celula.classList.add('bombaagua');
     }
+    trocaEstado(estados.PC);
     mostraNavioBombardeado();
+    jogadaPc();
 }
 function mostraNavioBombardeado(){
     const nav4 = document.querySelectorAll(`[data-n="0"].navio.bomba`);
@@ -375,6 +391,22 @@ function mostraNavioBombardeado(){
         if(nav1){
             destrocaImgPc(nav1);  
         }       
+    }
+}
+function jogadaPc(){
+    if (estadoJogo !== estados.PC){
+        return;
+    } 
+
+    trocaEstado(estados.JOGADOR);
+}
+
+function trocaEstado(estadoDestino) {
+    estadoJogo = estadoDestino;
+    if (estadoDestino === estados.PC) {
+        // escurece tabuleiro jogador, deixa o do pc claro
+    } else if (estadoDestino === estados.JOGADOR) {
+        // esclarece tabuleiro jogador, deixa o do pc escuro
     }
 }
 

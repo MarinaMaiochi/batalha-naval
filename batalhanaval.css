@@ -173,6 +173,9 @@ span>img{
 .navioMeio::after {
     background-image: url(navioMeio.png);
 }
+.navio.bomba::after {
+    background-image: url(bomba.png);
+}
 .navio1.bomba::after {
     background-image: url(bomba.png), url(navio1.png);
 }

@@ -4,6 +4,7 @@ let qtd1 = 4;
 let qtd2 = 3;
 let qtd3 = 2;
 let qtd4 = 1;
+let nDoNavio = 0;
 document.querySelector('.info').addEventListener('click', info);
 document.querySelector('.limpa').addEventListener('click', limpar);
 document.querySelector('.comeca').addEventListener('click', comecar);
@@ -17,14 +18,9 @@ function info(){
     }
 }
 function limpar(){
-    const naviosColocados = document.querySelectorAll(".navio");
+    const naviosColocados = document.querySelectorAll('.tabuleiroJog .navio'); 
     for (let i = 0; i < naviosColocados.length; i++) {
-        naviosColocados[i].classList.remove('navio');
-        naviosColocados[i].classList.remove('navio1');
-        naviosColocados[i].classList.remove('vertical');
-        naviosColocados[i].classList.remove('navioPonta');
-        naviosColocados[i].classList.remove('traz');
-        naviosColocados[i].classList.remove('navioMeio');
+        naviosColocados[i].classList.remove('navio' , 'navio1' , 'vertical','navioPonta' , 'traz', 'navioMeio'); 
     }
     qtd1 = 4; document.querySelector('.qtdTam1').innerText = qtd1 ;
     qtd2 = 3; document.querySelector('.qtdTam2').innerText = qtd2 ;
@@ -112,6 +108,8 @@ function colocaNavio(event) {
         qtd1--;
         document.querySelector('.qtdTam1').innerText = qtd1 ;
         celula.classList.add('navio', 'navio1');
+        celula.setAttribute("data-n" , nDoNavio);
+        nDoNavio++;
         if (sentido == 'VERT'){
             celula.classList.add('vertical');
         }
@@ -147,20 +145,28 @@ function colocaNavio(event) {
 function aplicaNavioHori(colI, colF, linI, parent){
    document.querySelector(`${parent} [data-coluna="${colI}"][data-linha="${linI}"]`).classList.add('navio', 'navioPonta');
    document.querySelector(`${parent} [data-coluna="${colF}"][data-linha="${linI}"]`).classList.add('navio', 'navioPonta', 'traz');
+   document.querySelector(`${parent} [data-coluna="${colI}"][data-linha="${linI}"]`).setAttribute("data-n" , nDoNavio);
+   document.querySelector(`${parent} [data-coluna="${colF}"][data-linha="${linI}"]`).setAttribute("data-n" , nDoNavio);
    if (colF-colI>1){
         for (let j = colI+1; j < colF; j++) {
             document.querySelector(`${parent} [data-coluna="${j}"][data-linha="${linI}"]`).classList.add('navio', 'navioMeio');
+            document.querySelector(`${parent} [data-coluna="${j}"][data-linha="${linI}"]`).setAttribute("data-n" , nDoNavio);
         } 
-    }           
+    } 
+    nDoNavio++;          
 }
 function aplicaNavioVert(colI, linI, linF, parent){
     document.querySelector(`${parent} [data-coluna="${colI}"][data-linha="${linI}"]`).classList.add('navio', 'navioPonta', 'vertical');
     document.querySelector(`${parent} [data-coluna="${colI}"][data-linha="${linF}"]`).classList.add('navio', 'navioPonta', 'traz', 'vertical');
+    document.querySelector(`${parent} [data-coluna="${colI}"][data-linha="${linI}"]`).setAttribute("data-n" , nDoNavio);
+    document.querySelector(`${parent} [data-coluna="${colI}"][data-linha="${linF}"]`).setAttribute("data-n" , nDoNavio);
     if (linF-linI>1){
          for (let i = linI+1; i < linF; i++) {
              document.querySelector(`${parent} [data-coluna="${colI}"][data-linha="${i}"]`).classList.add('navio', 'navioMeio', 'vertical');
+             document.querySelector(`${parent} [data-coluna="${colI}"][data-linha="${i}"]`).setAttribute("data-n" , nDoNavio);
          } 
-     }           
+    }
+    nDoNavio++;              
 }
 function checaEspacosDisponiveis(colI, colF, linI, linF, parent){
     let disponivel = true;
@@ -282,11 +288,54 @@ function colocaNavioPc(){
         const disp = checaEspacosDisponiveis(coord.colunaInicial, coord.colunaFinal, coord.linhaInicial, coord.linhaFinal, '.tabuleiroPc');
         if (disp){            
             document.querySelector(`${'.tabuleiroPc'} [data-coluna="${colI}"][data-linha="${linI}"]`).classList.add('navio', 'navio1');
+            document.querySelector(`${'.tabuleiroPc'} [data-coluna="${colI}"][data-linha="${linI}"]`).setAttribute("data-n" , nDoNavio);
+            nDoNavio++;
             if (sentidoAleat == 1){
                 document.querySelector(`${'.tabuleiroPc'} [data-coluna="${colI}"][data-linha="${linI}"]`).classList.add('vertical');
             }
             qtd1Pc--; 
         }   
+    }
+    trocaImgPc();
+}
+function trocaImgPc(){
+    const temNavio1 = document.querySelectorAll(`.tabuleiroPc .navio1`)
+    for (let i = 0; i < temNavio1.length ; i++) { 
+        temNavio1[i].classList.add('n1');
+        temNavio1[i].classList.remove('navio1');
+    }
+    const temNavioP = document.querySelectorAll(`.tabuleiroPc .navioPonta`)
+    for (let i = 0; i < temNavioP.length ; i++) { 
+        temNavioP[i].classList.add('nP');
+        temNavioP[i].classList.remove('navioPonta');
+    }
+    const temNavioM = document.querySelectorAll(`.tabuleiroPc .navioMeio`)
+    for (let i = 0; i < temNavioM.length ; i++) { 
+        temNavioM[i].classList.add('nM');
+        temNavioM[i].classList.remove('navioMeio');
+    }
+    const temVert = document.querySelectorAll(`.tabuleiroPc .vertical `)
+    for (let i = 0; i < temVert .length ; i++) { 
+        temVert [i].classList.add('v');
+        temVert [i].classList.remove('vertical');
+    }
+}
+function destrocaImgPc(navio){
+    if (navio.classList.contains('n1')){ 
+        navio.classList.add('navio1');
+        navio.classList.remove('n1');
+    }
+    if (navio.classList.contains('nP')){ 
+        navio.classList.add('navioPonta');
+        navio.classList.remove('nP');
+    }
+    if (navio.classList.contains('nM')){     
+        navio.classList.add('navioMeio');
+        navio.classList.remove('nM');
+    }
+    if (navio.classList.contains('v')){ 
+        navio.classList.add('vertical');
+        navio.classList.remove('v');
     }
 }
 function confereBombaTabPc(event){
@@ -296,6 +345,38 @@ function confereBombaTabPc(event){
     } else {
         celula.classList.add('bombaagua');
     }
+    mostraNavioBombardeado();
 }
+function mostraNavioBombardeado(){
+    const nav4 = document.querySelectorAll(`[data-n="0"].navio.bomba`);
+    if( nav4.length == 4){
+        for (let i = 0; i < 4; i++) {
+            destrocaImgPc(nav4[i]); 
+        }
+    }
+    for (let n = 1; n < 3; n++) {  
+        const nav3 = document.querySelectorAll(`[data-n="${n}"].navio.bomba`);
+        if( nav3.length == 3){
+            for (let i = 0; i < 3; i++) {
+                destrocaImgPc(nav3[i]); 
+            }       
+        }
+    }
+    for (let n = 3; n < 6; n++) {  
+        const nav2 = document.querySelectorAll(`[data-n="${n}"].navio.bomba`)
+        if( nav2.length == 2){
+            for (let i = 0; i < 2; i++) {
+                destrocaImgPc(nav2[i]); 
+            }         
+        }
+    }
+    for (let n = 6; n < 10; n++) { 
+        const nav1 = document.querySelector(`[data-n="${n}"].navio.bomba`)
+        if(nav1){
+            destrocaImgPc(nav1);  
+        }       
+    }
+}
+
 setTabuleiroPc();
 setTabuleiroJog();

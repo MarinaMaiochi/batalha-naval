@@ -192,10 +192,10 @@ span>img{
     background-image: url(navio1.png);
 }
 .navioPonta::after {
-    background-image: url(navioPonta.png);
+    background-image: url(NavioPonta.png);
 }
 .navioMeio::after {
-    background-image: url(navioMeio.png);
+    background-image: url(NavioMeio.png);
 }
 .navio.bomba::after {
     background-image: url(bomba.png);

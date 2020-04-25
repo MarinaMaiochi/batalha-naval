@@ -216,36 +216,29 @@ span>img{
     transform: rotate(180deg);
 }
 
-.flip-box {
+.box {
     border: rgb(12, 109, 109) solid 1px;
     position: relative;
     height: 360px;
     width: 330px;
+    overflow: hidden;
 }
-.flip-box-inner {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    transition: transform 0.8s;
-    transform-style: preserve-3d;
+
+.vaiparaesquerda{
+    transform: translateX(-340px);
 }
-.flip-box.virado .flip-box-inner {
-    transform: rotateY(180deg);
+.box-inner {
+    transition: ease-in-out transform 0.5s;
 }
-.flip-box-front, .flip-box-back {
+
+.box-jog{
     position: absolute;
-    width: 100%;
-    height: 100%;  
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    background-color: black;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    left: 0;
+    top: 0;
 }
-.flip-box.virado .flip-box-front {
-    z-index: -10;
+.box-pc{
+    position: absolute;
+    left: 340px;
+    top: 0;
 }
-.flip-box-back {
-    transform: rotateY(180deg);
-}
+    

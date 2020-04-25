@@ -360,9 +360,11 @@ function jogadaJog(event){
     }
     acertoJog += atiraNaCelula(event.target);
     nDaJogada++;
-    trocaEstado(estados.PC);
     mostraNavioBombardeado();
-    setTimeout(jogadaPc, 1000);
+    setTimeout(function() {
+        trocaEstado(estados.PC);
+        setTimeout(jogadaPc, 700);
+    }, 1000)
 }
 function atiraNaCelula(celula){
     if (celula.classList.contains('navio')){
@@ -426,16 +428,18 @@ function jogadaPc(){
 
     setTimeout(function() {
         trocaEstado(estados.JOGADOR)
-    },800);
+    },1000);
 }
 
 function trocaEstado(estadoDestino){
     verificaFinaldeJogo();
     estadoJogo = estadoDestino;
     if (estadoDestino === estados.PC) {
-        document.querySelector('.flip-box').classList.remove('virado');
+        document.querySelector('.box-inner').classList.remove('vaiparaesquerda');
+        
     } else if (estadoDestino === estados.JOGADOR) {
-        document.querySelector('.flip-box').classList.add('virado');
+        document.querySelector('.box-inner').classList.add('vaiparaesquerda');
+        
     }
 }
 function verificaFinaldeJogo(){

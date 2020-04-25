@@ -21,6 +21,8 @@ document.querySelector('.info').addEventListener('click', info);
 document.querySelector('.limpa').addEventListener('click', limpar);
 document.querySelector('.comeca').addEventListener('click', comecar);
 document.querySelector('.sentido').addEventListener('click', seta);
+document.querySelector('.geradoraleatorio').addEventListener('click', navAleatJog);
+
 function info(){
     const infoBut = document.querySelector(".mostraInfos");
     if(infoBut.classList.contains('some')){
@@ -70,6 +72,18 @@ function seta(event){
         sentido = 'VERT';
     }
 }
+
+function navAleatJog(){
+    limpar();
+    colocaNavioAleatorio('.tabuleiroJog');
+    qtd1 = 0; document.querySelector('.qtdTam1').innerText = qtd1 ;
+    qtd2 = 0; document.querySelector('.qtdTam2').innerText = qtd2 ;
+    qtd3 = 0; document.querySelector('.qtdTam3').innerText = qtd3 ;
+    qtd4 = 0; document.querySelector('.qtdTam4').innerText = qtd4 ;
+}
+    
+
+
 function setTabuleiroJog (){
     const tabuleiro = document.querySelector(".tabuleiroJog");         
     for (let j = 0; j < 10; j++) {             
@@ -238,9 +252,10 @@ function setTabuleiroPc(){
         }  
         tabuleiro.appendChild(divColuna);
     }
-    colocaNavioPc();
+    colocaNavioAleatorio('.tabuleiroPc');
+    trocaImgPc();
 }
-function colocaNavioPc(){  
+function colocaNavioAleatorio(parent){  
     let qtd1Pc = 4;
     let qtd2Pc = 3;
     let qtd3Pc = 2;
@@ -254,9 +269,9 @@ function colocaNavioPc(){
         
         const coord = normalizaEspaco(colI,linI,4,sentidoStr);
         if (sentidoAleat == 0){
-            aplicaNavioHori(coord.colunaInicial, coord.colunaFinal, coord.linhaInicial , '.tabuleiroPc');             
+            aplicaNavioHori(coord.colunaInicial, coord.colunaFinal, coord.linhaInicial , parent);             
         } else if (sentidoAleat == 1){
-            aplicaNavioVert(coord.colunaInicial,coord.linhaInicial, coord.linhaFinal, '.tabuleiroPc');               
+            aplicaNavioVert(coord.colunaInicial,coord.linhaInicial, coord.linhaFinal, parent);               
         } 
         qtd4Pc--;   
     }
@@ -267,12 +282,12 @@ function colocaNavioPc(){
         let linI = Math.floor(Math.random() *10);
         
         const coord = normalizaEspaco(colI,linI,3,sentidoStr);
-        const disp = checaEspacosDisponiveis(coord.colunaInicial, coord.colunaFinal, coord.linhaInicial, coord.linhaFinal, '.tabuleiroPc');
+        const disp = checaEspacosDisponiveis(coord.colunaInicial, coord.colunaFinal, coord.linhaInicial, coord.linhaFinal, parent);
         if (disp){   
             if (sentidoAleat == 0){
-                aplicaNavioHori(coord.colunaInicial, coord.colunaFinal, coord.linhaInicial, '.tabuleiroPc');             
+                aplicaNavioHori(coord.colunaInicial, coord.colunaFinal, coord.linhaInicial, parent);             
             } else if (sentidoAleat == 1){
-                aplicaNavioVert(coord.colunaInicial,coord.linhaInicial, coord.linhaFinal, '.tabuleiroPc');               
+                aplicaNavioVert(coord.colunaInicial,coord.linhaInicial, coord.linhaFinal, parent);               
             } 
             qtd3Pc--;   
         }
@@ -284,12 +299,12 @@ function colocaNavioPc(){
         let linI = Math.floor(Math.random() *10);
         
         const coord = normalizaEspaco(colI,linI,2,sentidoStr);
-        const disp = checaEspacosDisponiveis(coord.colunaInicial, coord.colunaFinal, coord.linhaInicial, coord.linhaFinal, '.tabuleiroPc');
+        const disp = checaEspacosDisponiveis(coord.colunaInicial, coord.colunaFinal, coord.linhaInicial, coord.linhaFinal, parent);
         if (disp){  
             if (sentidoAleat == 0){
-                aplicaNavioHori(coord.colunaInicial, coord.colunaFinal, coord.linhaInicial, '.tabuleiroPc');             
+                aplicaNavioHori(coord.colunaInicial, coord.colunaFinal, coord.linhaInicial, parent);             
             } else if (sentidoAleat == 1){
-                aplicaNavioVert(coord.colunaInicial,coord.linhaInicial, coord.linhaFinal, '.tabuleiroPc');               
+                aplicaNavioVert(coord.colunaInicial,coord.linhaInicial, coord.linhaFinal, parent);               
             } 
             qtd2Pc--; 
         }
@@ -301,18 +316,17 @@ function colocaNavioPc(){
         let linI = Math.floor(Math.random() *10);
         
         const coord = normalizaEspaco(colI,linI,1,sentidoStr);
-        const disp = checaEspacosDisponiveis(coord.colunaInicial, coord.colunaFinal, coord.linhaInicial, coord.linhaFinal, '.tabuleiroPc');
+        const disp = checaEspacosDisponiveis(coord.colunaInicial, coord.colunaFinal, coord.linhaInicial, coord.linhaFinal, parent);
         if (disp){            
-            document.querySelector(`${'.tabuleiroPc'} [data-coluna="${colI}"][data-linha="${linI}"]`).classList.add('navio', 'navio1');
-            document.querySelector(`${'.tabuleiroPc'} [data-coluna="${colI}"][data-linha="${linI}"]`).setAttribute("data-n" , nDoNavio);
+            document.querySelector(`${parent} [data-coluna="${colI}"][data-linha="${linI}"]`).classList.add('navio', 'navio1');
+            document.querySelector(`${parent} [data-coluna="${colI}"][data-linha="${linI}"]`).setAttribute("data-n" , nDoNavio);
             nDoNavio++;
             if (sentidoAleat == 1){
-                document.querySelector(`${'.tabuleiroPc'} [data-coluna="${colI}"][data-linha="${linI}"]`).classList.add('vertical');
+                document.querySelector(`${parent} [data-coluna="${colI}"][data-linha="${linI}"]`).classList.add('vertical');
             }
             qtd1Pc--; 
         }   
     }
-    trocaImgPc();
 }
 function trocaImgPc(){
     const temNavio1 = document.querySelectorAll(`.tabuleiroPc .navio1`)

@@ -218,10 +218,10 @@ span>img{
     background-image: url(bomba.png), url(navio1.png);
 }
 .navioPonta.bomba::after {
-    background-image: url(bomba.png), url(navioPonta.png);
+    background-image: url(bomba.png), url(NavioPonta.png);
 }
 .navioMeio.bomba::after{
-    background-image: url(bomba.png), url(navioMeio.png);
+    background-image: url(bomba.png), url(NavioMeio.png);
 }
 .navio.trazPc.vertical::after {
     transform: rotate(270deg);

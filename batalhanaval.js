@@ -456,65 +456,47 @@ function jogadaPc(){
             celulaPraJogar = adjacenteAleat(ultimoAcertoPc);
         } else {
             console.info('teve + de 1 acerto');
-            const celUltAcerto = ultimosAcertos[ultimosAcertos.length-1]
-            const celPenultAcerto = ultimosAcertos[ultimosAcertos.length-2]
-
+            const celUltAcerto = ultimosAcertos[ultimosAcertos.length-1];
             const ultN = celUltAcerto.getAttribute('data-n');
-            const penultN = celPenultAcerto.getAttribute('data-n');
-            if (ultN != penultN){
-                console.info('teve + de 1 acertonavios diferentes, jogando adjacente do ultimo');
+            const primeiroAcertoNavio = ultimosAcertos.find(function(acerto){
+                return acerto.getAttribute('data-n') == ultN;
+            })
+            if (celUltAcerto == primeiroAcertoNavio){
+                console.info('só acertou uma vez o navio, jogando adjacente do ultimo');
                 celulaPraJogar = adjacenteAleat(ultimoAcertoPc);
             } else {
                 console.info('navios iguais');
                 const colultN = parseInt(celUltAcerto.getAttribute('data-coluna'));
-                const colpenultN = parseInt(celPenultAcerto.getAttribute('data-coluna'));
+                const colPrimN = parseInt(primeiroAcertoNavio.getAttribute('data-coluna'));
                 const linultN = parseInt(celUltAcerto.getAttribute('data-linha'));
-                const linpenultN = parseInt(celPenultAcerto.getAttribute('data-linha'));
-                const difLinha = linultN - linpenultN;   
-                const difColuna = colultN - colpenultN;  
-                console.info(`diflinha:${difLinha} difcoluna${difColuna}`);
-                if(colultN == colpenultN){
+                const linPrimN = parseInt(primeiroAcertoNavio.getAttribute('data-linha'));
+                const difLinha = Math.sign(linultN - linPrimN);   
+                const difColuna = Math.sign(colultN - colPrimN);  
+                console.info(`difLinha:${difLinha} difColuna${difColuna}`);
+                if(colultN == colPrimN){
                     if (linultN < 9 && linultN > 0) {
                         console.info('nao esta nas bordas da linha, jogando na segqieuncia');
                         celulaPraJogar = pegaCelTabJog(linultN+difLinha,colultN);
                         if(celulaPraJogar.classList.contains('bombaagua') || celulaPraJogar.classList.contains('bomba')){
                             console.info('seq de jogada ja tem bomba, jogandoparaouyro lado');
-                            const primeiroAcertoNavio = ultimosAcertos.find(function(acerto){
-                                return acerto.getAttribute('data-n') == ultN;
-                            })
-                            const linPriAcertoNavio = parseInt(primeiroAcertoNavio.getAttribute('data-linha'));
-                            celulaPraJogar = pegaCelTabJog(linPriAcertoNavio-difLinha,colultN);
+                            celulaPraJogar = pegaCelTabJog(linPrimN-difLinha,colultN);
                         }
                     } else {
                         console.info('estou na borda da linha, jogando pro oiutro lado');
-                        const primeiroAcertoNavio = ultimosAcertos.find(function(acerto){
-                            return acerto.getAttribute('data-n') == ultN;
-                        })
-                        const linPriAcertoNavio = parseInt(primeiroAcertoNavio.getAttribute('data-linha'));
-                        celulaPraJogar = pegaCelTabJog(linPriAcertoNavio-difLinha,colultN);
+                        celulaPraJogar = pegaCelTabJog(linPrimN-difLinha,colultN);
                     }
-                    
                 } else {
                     if (colultN < 9 && colultN > 0) {
                         console.info('nao esta nas bordas da coluna, jogando na segqieuncia');
                         celulaPraJogar = pegaCelTabJog(linultN,colultN+difColuna);
                         if(celulaPraJogar.classList.contains('bombaagua') || celulaPraJogar.classList.contains('bomba')){
                             console.info('seq de jogada ja tem bomba, jogandoparaouyro lado');
-                            const primeiroAcertoNavio = ultimosAcertos.find(function(acerto){
-                                return acerto.getAttribute('data-n') == ultN;
-                            })
-                            const colPriAcertoNavio = parseInt(primeiroAcertoNavio.getAttribute('data-coluna'));
-                            celulaPraJogar = pegaCelTabJog(linultN,colPriAcertoNavio-difColuna);
+                            celulaPraJogar = pegaCelTabJog(linultN,colPrimN-difColuna);
                         }
                     } else {
                         console.info('estou na borda da coluna, jogando pro oiutro lado');
-                        const primeiroAcertoNavio = ultimosAcertos.find(function(acerto){
-                            return acerto.getAttribute('data-n') == ultN;
-                        })
-                        const colPriAcertoNavio = parseInt(primeiroAcertoNavio.getAttribute('data-coluna'));
-                        celulaPraJogar = pegaCelTabJog(linultN,colPriAcertoNavio-difColuna);
+                        celulaPraJogar = pegaCelTabJog(linultN,colPrimN-difColuna);
                     }
-                    
                 }
             }
         }    

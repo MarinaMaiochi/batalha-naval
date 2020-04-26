@@ -16,6 +16,7 @@ let nDaJogada = 0 ;
 let acertoJog = 0 ;
 let acertoPc = 0 ;
 let navioJog = 0; 
+let jogadasPc = [];
 
 document.querySelector('.info').addEventListener('click', info);
 document.querySelector('.limpa').addEventListener('click', limpar);
@@ -43,8 +44,9 @@ function limpar(){
 }
 function comecar(){
     if (qtd1 == 0 && qtd2 == 0 && qtd3 == 0 && qtd4 == 0){
+        jogadasPc = [];
         deixaEscuro();
-        trocaEstado(estados.JOGADOR);
+        trocaEstado(estados.JOGADOR); 
     }
 }
 function deixaEscuro(){
@@ -81,9 +83,7 @@ function navAleatJog(){
     qtd3 = 0; document.querySelector('.qtdTam3').innerText = qtd3 ;
     qtd4 = 0; document.querySelector('.qtdTam4').innerText = qtd4 ;
 }
-    
-
-
+   
 function setTabuleiroJog (){
     const tabuleiro = document.querySelector(".tabuleiroJog");         
     for (let j = 0; j < 10; j++) {             
@@ -436,13 +436,71 @@ function jogadaPc(){
     if (estadoJogo !== estados.PC){
         return;
     } 
-    const jogaveis = document.querySelectorAll(`.tabuleiroJog .celula:not(.bomba):not(.bombaagua)`);
-    const indiceRandom = Math.floor(Math.random()*jogaveis.length);
-    acertoPc += atiraNaCelula(jogaveis[indiceRandom]);
+    let ultimoAcertoPc;
+    for (let i = jogadasPc.length -1; i >= 0; i--) {
+        if (jogadasPc[i].classList.contains('bomba')){
+            ultimoAcertoPc = jogadasPc[i];
+            break;
+        }
+    }
+    let celulaPraJogar;
+    if (!ultimoAcertoPc || verificaUltimoNavioBomb(ultimoAcertoPc)){
+        celulaPraJogar = escolheCelulaAleat();
+        console.info('nao acertei nada ou ultimo navio bomb');
+    } else {
+        // teve ultimo acerto e nao destruiu o navio
+        celulaPraJogar = adjacenteAleat(ultimoAcertoPc);
+        console.info('teve ultimo acerto e nao destruiu o navio');
+    }
+    acertoPc += atiraNaCelula(celulaPraJogar);
+    jogadasPc.push(celulaPraJogar);
+   
 
     setTimeout(function() {
         trocaEstado(estados.JOGADOR)
     },1000);
+}
+function escolheCelulaAleat(){
+    const jogaveis = document.querySelectorAll(`.tabuleiroJog .celula:not(.bomba):not(.bombaagua)`);
+    const indiceRandom = Math.floor(Math.random()*jogaveis.length);
+    return jogaveis[indiceRandom];
+}
+function verificaUltimoNavioBomb(ultimoAcerto){
+    const nDoNavio = ultimoAcerto.getAttribute('data-n');
+    const nPecasNavio = document.querySelectorAll(`[data-n="${nDoNavio}"]`);
+    const pecasComBomba = document.querySelectorAll(`[data-n="${nDoNavio}"].bomba`);
+    return nPecasNavio.length == pecasComBomba.length;
+}
+function adjacenteAleat(celula){
+    const col = parseInt(celula.getAttribute('data-coluna'),10);
+    const lin = parseInt(celula.getAttribute('data-linha'),10); 
+    const adjPossiveis = [];
+    if(col > 0){
+        const celOeste = document.querySelector(`[data-coluna="${col-1}"][data-linha="${lin}"]`);
+        if (!celOeste.classList.contains('bomba') && !celOeste.classList.contains('bombaagua')){
+            adjPossiveis.push(celOeste);
+        }
+    }
+    if(col < 9){
+        const celLeste = document.querySelector(`[data-coluna="${col+1}"][data-linha="${lin}"]`);
+        if (!celLeste.classList.contains('bomba') && !celLeste.classList.contains('bombaagua')){
+            adjPossiveis.push(celLeste);
+        }
+    }
+    if(lin > 0){
+        const celNorte = document.querySelector(`[data-coluna="${col}"][data-linha="${lin-1}"]`);
+        if (!celNorte.classList.contains('bomba') && !celNorte.classList.contains('bombaagua')){
+            adjPossiveis.push(celNorte);
+        }
+    }
+    if(lin < 9){
+        const celSul = document.querySelector(`[data-coluna="${col}"][data-linha="${lin+1}"]`);
+        if (!celSul.classList.contains('bomba') && !celSul.classList.contains('bombaagua')){
+            adjPossiveis.push(celSul);
+        }
+    }
+    const indiceRandom = Math.floor(Math.random()*adjPossiveis.length);
+    return adjPossiveis[indiceRandom];
 }
 
 function trocaEstado(estadoDestino){
@@ -487,6 +545,7 @@ function contaNavioBombardeadoJog(){
     }
     return navioPc;
 }
+
 
 setTabuleiroPc();
 setTabuleiroJog();

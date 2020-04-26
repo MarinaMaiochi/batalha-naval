@@ -16,13 +16,16 @@ let nDaJogada = 0 ;
 let acertoJog = 0 ;
 let acertoPc = 0 ;
 let navioJog = 0; 
+let navioPc = 0 ;
 let jogadasPc = [];
 
 document.querySelector('.info').addEventListener('click', info);
-document.querySelector('.limpa').addEventListener('click', limpar);
+document.querySelector('.limpa').addEventListener('click', limpar('.tabuleiroJog'));
 document.querySelector('.comeca').addEventListener('click', comecar);
+document.querySelector('.recomeca').addEventListener('click', recomecar);
 document.querySelector('.sentido').addEventListener('click', seta);
 document.querySelector('.geradoraleatorio').addEventListener('click', navAleatJog);
+
 
 function info(){
     const infoBut = document.querySelector(".mostraInfos");
@@ -32,26 +35,65 @@ function info(){
         infoBut.classList.add('some');
     }
 }
-function limpar(){
-    const naviosColocados = document.querySelectorAll('.tabuleiroJog .navio'); 
+function limpar(parent){
+    const naviosColocados = document.querySelectorAll(`${parent} .agua`); 
     for (let i = 0; i < naviosColocados.length; i++) {
-        naviosColocados[i].classList.remove('navio' , 'navio1' , 'vertical','navioPonta' , 'traz', 'navioMeio'); 
+        naviosColocados[i].classList.remove('navio' , 'navio1' , 'vertical','navioPonta' , 'traz', 'navioMeio', 'bomba', 'bombaagua'); 
     }
     qtd1 = 4; document.querySelector('.qtdTam1').innerText = qtd1 ;
     qtd2 = 3; document.querySelector('.qtdTam2').innerText = qtd2 ;
     qtd3 = 2; document.querySelector('.qtdTam3').innerText = qtd3 ;
     qtd4 = 1; document.querySelector('.qtdTam4').innerText = qtd4 ;
 }
-function comecar(){
+function comecar(event){
     if (qtd1 == 0 && qtd2 == 0 && qtd3 == 0 && qtd4 == 0){
         jogadasPc = [];
         deixaEscuro();
         trocaEstado(estados.JOGADOR); 
+        event.target.classList.add('some');
+        document.querySelector('.recomeca').classList.remove('some');
     }
+}
+function recomecar(event){
+    document.querySelector('.box-inner').classList.remove('vaiparaesquerda');
+    deixaClaro();
+    event.target.classList.add('some');
+    document.querySelector('.comeca').classList.remove('some');
+    trocaEstado(estados.INICIO); 
+    nDoNavio = 0 ;
+    nDaJogada = 0 ;
+    acertoJog = 0 ;
+    acertoPc = 0 ;
+    navioJog = 0 ; 
+    navioPc = 0 ;
+    jogadasPc = [];
+    qtd1 = 4; document.querySelector('.qtdTam1').innerText = qtd1 ;
+    qtd2 = 3; document.querySelector('.qtdTam2').innerText = qtd2 ;
+    qtd3 = 2; document.querySelector('.qtdTam3').innerText = qtd3 ;
+    qtd4 = 1; document.querySelector('.qtdTam4').innerText = qtd4 ;
+    document.querySelector(".tabuleiroJog").innerHTML = '';  
+    document.querySelector(".tabuleiroPc").innerHTML = ''; 
+    atualizaPlacar(); 
+    setTabuleiroPc();
+    setTabuleiroJog();
+}
+function deixaClaro(){
+    document.querySelector(".sentido").classList.remove('escuro');
+    document.querySelector(".limpa").classList.remove('escuro');
+    document.querySelector(".geradoraleatorio").classList.remove('escuro');
+    document.querySelector(".qtdTam1").classList.remove('escuro');
+    document.querySelector(".qtdTam2").classList.remove('escuro');
+    document.querySelector(".qtdTam3").classList.remove('escuro');
+    document.querySelector(".qtdTam4").classList.remove('escuro');
+    document.querySelector(".nav1").classList.remove('escuro');
+    document.querySelector(".nav2").classList.remove('escuro');
+    document.querySelector(".nav3").classList.remove('escuro');
+    document.querySelector(".nav4").classList.remove('escuro');
 }
 function deixaEscuro(){
     document.querySelector(".sentido").classList.add('escuro');
     document.querySelector(".limpa").classList.add('escuro');
+    document.querySelector(".geradoraleatorio").classList.add('escuro');
     document.querySelector(".qtdTam1").classList.add('escuro');
     document.querySelector(".qtdTam2").classList.add('escuro');
     document.querySelector(".qtdTam3").classList.add('escuro');
@@ -74,16 +116,14 @@ function seta(event){
         sentido = 'VERT';
     }
 }
-
 function navAleatJog(){
-    limpar();
+    limpar('.tabuleiroJog');
     colocaNavioAleatorio('.tabuleiroJog');
     qtd1 = 0; document.querySelector('.qtdTam1').innerText = qtd1 ;
     qtd2 = 0; document.querySelector('.qtdTam2').innerText = qtd2 ;
     qtd3 = 0; document.querySelector('.qtdTam3').innerText = qtd3 ;
     qtd4 = 0; document.querySelector('.qtdTam4').innerText = qtd4 ;
 }
-   
 function setTabuleiroJog (){
     const tabuleiro = document.querySelector(".tabuleiroJog");         
     for (let j = 0; j < 10; j++) {             
@@ -378,7 +418,7 @@ function jogadaJog(event){
     setTimeout(function() {
         trocaEstado(estados.PC);
         setTimeout(jogadaPc, 700);
-    }, 1000)
+    }, 800)
 }
 function atiraNaCelula(celula){
     if (celula.classList.contains('navio')){
@@ -430,7 +470,6 @@ function mostraNavioBombardeado(){
             destrocaImgPc(nav1);
         }       
     }
-   
 }
 function jogadaPc(){
     if (estadoJogo !== estados.PC){
@@ -507,7 +546,7 @@ function jogadaPc(){
 
     setTimeout(function() {
         trocaEstado(estados.JOGADOR)
-    },1000);
+    },800);
 }
 function pegaCelTabJog(linha,coluna){
     return document.querySelector(`.tabuleiroJog [data-coluna="${coluna}"][data-linha="${linha}"]`)
@@ -554,7 +593,6 @@ function adjacenteAleat(celula){
     const indiceRandom = Math.floor(Math.random()*adjPossiveis.length);
     return adjPossiveis[indiceRandom];
 }
-
 function trocaEstado(estadoDestino){
     verificaFinaldeJogo();
     estadoJogo = estadoDestino;
@@ -587,11 +625,11 @@ function atualizaPlacar(){
     document.querySelector('.navioPc').innerText = contaNavioBombardeadoJog();
 }
 function contaNavioBombardeadoJog(){
-    let navioPc = 0;
+    navioPc = 0;
     for (let i = 10; i < 20; i++){
         const navios = document.querySelectorAll(`[data-n="${i}"]`).length;
         const navioBomba = document.querySelectorAll(`[data-n="${i}"].bomba`).length;
-        if (navios == navioBomba) {
+        if (navios != 0 && navios == navioBomba) {
             navioPc++;
         }
     }

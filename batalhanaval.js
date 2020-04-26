@@ -18,6 +18,7 @@ let acertoPc = 0 ;
 let navioJog = 0; 
 let navioPc = 0 ;
 let jogadasPc = [];
+let debug = false;
 
 document.querySelector('.info').addEventListener('click', info);
 document.querySelector('.limpa').addEventListener('click', limpar('.tabuleiroJog'));
@@ -56,6 +57,7 @@ function comecar(event){
 function recomecar(event){
     document.querySelector('.box-inner').classList.remove('vaiparaesquerda');
     deixaClaro();
+    document.querySelector('.finalDeJogo').classList.add('some');
     event.target.classList.add('some');
     document.querySelector('.comeca').classList.remove('some');
     trocaEstado(estados.INICIO); 
@@ -405,7 +407,7 @@ function destrocaImgPc(navio){
     }
 }
 function jogadaJog(event){
-    if (estadoJogo !== estados.JOGADOR){
+    if (estadoJogo !== estados.JOGADOR && !debug){
         return;
     }
     acertoJog += atiraNaCelula(event.target);
@@ -468,7 +470,7 @@ function mostraNavioBombardeado(){
     }
 }
 function jogadaPc(){
-    if (estadoJogo !== estados.PC){
+    if (estadoJogo !== estados.PC  && !debug){
         return;
     } 
     const ultimosAcertos = [];
@@ -483,12 +485,15 @@ function jogadaPc(){
     if (!ultimoAcertoPc || verificaUltimoNavioBomb(ultimoAcertoPc)){
         console.info('nao acertou nada ou ultimo navio bomb,  jogando aleatorio');
         if (ultimosAcertos.length > 1){
-            console.info('-------ENTROU NO VERIF QUE FICOU PARA TRAZ');
+            console.info('-------ENTROU NO VERIF SE FICOU PARA TRAZ');
             const navioQueFicouParaTraz = achaNavioQueFicouParaTraz(ultimosAcertos);
             if (navioQueFicouParaTraz){
                 console.info('---------- NAVIO QUE FICOU PARA TRAZ' + navioQueFicouParaTraz);
                 celulaPraJogar = adjacenteAleat(navioQueFicouParaTraz) ;
                 console.info('---------- JOGOU NO ADJ QUE FICOU PARA TRAZ' + celulaPraJogar);
+            } else { 
+                celulaPraJogar = escolheCelulaAleat();
+                console.info('jogou aleatorio' + celulaPraJogar);
             }
         } else { 
             celulaPraJogar = escolheCelulaAleat();
@@ -522,9 +527,11 @@ function jogadaPc(){
                 if(colultN == colPrimN){
                     if (linultN < 9 && linultN > 0) {
                         console.info('nao esta nas bordas da linha, jogando na segqieuncia');
+                        console.info(`Linha :${linultN+difLinha} Coluna :${colultN}`);
                         celulaPraJogar = pegaCelTabJog(linultN+difLinha,colultN);
                         if(celulaPraJogar.classList.contains('bombaagua') || celulaPraJogar.classList.contains('bomba')){
                             console.info('seq de jogada ja tem bomba, jogandoparaouyro lado');
+                            console.info(`Linha :${linultN-difLinha} Coluna :${colultN}`);
                             celulaPraJogar = pegaCelTabJog(linPrimN-difLinha,colultN);
                         }
                     } else {
@@ -534,13 +541,16 @@ function jogadaPc(){
                 } else {
                     if (colultN < 9 && colultN > 0) {
                         console.info('nao esta nas bordas da coluna, jogando na segqieuncia');
+                        console.info(`Linha :${linultN} Coluna :${colPrimN+difColuna}`);
                         celulaPraJogar = pegaCelTabJog(linultN,colultN+difColuna);
                         if(celulaPraJogar.classList.contains('bombaagua') || celulaPraJogar.classList.contains('bomba')){
                             console.info('seq de jogada ja tem bomba, jogandoparaouyro lado');
+                            console.info(`Linha :${linultN} Coluna :${colPrimN-difColuna}`);
                             celulaPraJogar = pegaCelTabJog(linultN,colPrimN-difColuna);
                         }
                     } else {
                         console.info('estou na borda da coluna, jogando pro oiutro lado');
+                        console.info(`Linha :${linultN} Coluna :${colPrimN-difColuna}`);
                         celulaPraJogar = pegaCelTabJog(linultN,colPrimN-difColuna);
                     }
                 }
@@ -559,9 +569,14 @@ function achaNavioQueFicouParaTraz(ultimosAcertos){
         const n1 = ultimosAcertos[i].getAttribute('data-n');
         const n2 = ultimosAcertos[i+1].getAttribute('data-n');
         if (n1 != n2 && !verificaUltimoNavioBomb(ultimosAcertos[i])){
-            return ultimosAcertos[i];
+            console.info(`navioQueFicouParaTraz ${n1}`);
+            const navioQueFicouParaTraz = ultimosAcertos.find(function(acerto){
+            return acerto.getAttribute('data-n') == n1;
+            })
+            return navioQueFicouParaTraz ;
         }
-    }     
+    } 
+    return null;    
 }
 
 function pegaCelTabJog(linha,coluna){
@@ -615,7 +630,7 @@ function trocaEstado(estadoDestino){
     if (estadoDestino === estados.PC) {
         document.querySelector('.box-inner').classList.remove('vaiparaesquerda');
         
-    } else if (estadoDestino === estados.JOGADOR) {
+    } else if (estadoDestino === estados.JOGADOR  && !debug) {
         document.querySelector('.box-inner').classList.add('vaiparaesquerda');
         
     }

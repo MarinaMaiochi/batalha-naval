@@ -60,7 +60,6 @@ function recomecar(event){
     document.querySelector('.finalDeJogo').classList.add('some');
     event.target.classList.add('some');
     document.querySelector('.comeca').classList.remove('some');
-    trocaEstado(estados.INICIO); 
     nDoNavio = 0 ;     nDaJogada = 0 ;
     acertoJog = 0 ;    acertoPc = 0 ;
     navioJog = 0 ;     navioPc = 0 ;
@@ -74,6 +73,7 @@ function recomecar(event){
     atualizaPlacar(); 
     setTabuleiroPc();
     setTabuleiroJog();
+    trocaEstado(estados.INICIO); 
 }
 function deixaClaro(){
     document.querySelector(".sentido").classList.remove('escuro');
